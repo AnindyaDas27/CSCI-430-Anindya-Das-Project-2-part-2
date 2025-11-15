@@ -1,11 +1,10 @@
 package ui;
-
 import java.util.*;
 
 public class Warehouse {
     private static Warehouse instance;
-    private List<String> clients = new ArrayList<>();
-    private List<String> products = new ArrayList<>();
+    private Map<String, Client> clients = new HashMap<>();
+    private Map<String, Product> products = new HashMap<>();
 
     private Warehouse() {}
 
@@ -14,21 +13,33 @@ public class Warehouse {
         return instance;
     }
 
-    // CLIENT METHODS
+    // CLIENTS
     public void addClient(String id) {
-        clients.add(id + " (Balance: $0)");
+        if (!clients.containsKey(id)) {
+            clients.put(id, new Client(id));
+        }
     }
 
-    public List<String> getClients() {
-        return clients;
+    public Collection<Client> getClients() {
+        return clients.values();
     }
 
-    // PRODUCT METHODS
-    public void addProduct(String name, int qty, double price) {
-        products.add(name + " - Qty: " + qty + " @ $" + price);
+    public Client getClient(String id) {
+        return clients.get(id);
     }
 
-    public List<String> getProducts() {
-        return products;
+    // PRODUCTS
+    public void addProduct(String id, int qty, double price) {
+        if (!products.containsKey(id)) {
+            products.put(id, new Product(id, qty, price));
+        }
+    }
+
+    public Collection<Product> getProducts() {
+        return products.values();
+    }
+
+    public Product getProduct(String id) {
+        return products.get(id);
     }
 }
